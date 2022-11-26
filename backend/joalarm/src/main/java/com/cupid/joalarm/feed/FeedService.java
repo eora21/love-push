@@ -201,6 +201,7 @@ public class FeedService {
         result.setCreatedAt(feed.getCreatedAt());
         result.setUpdatedAt(feed.getUpdatedAt());
         result.setFeedId(feed.getAccount().getAccountSeq());
+        result.setComments(getComments(feedId));
 
         // Check like_status
         Like like_flag = likeRepository.findByAccountAndFeed(account, feed);
