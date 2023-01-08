@@ -4,6 +4,7 @@ import static com.cupid.joalarm.chat.entity.QChat.chat;
 
 import com.cupid.joalarm.chat.dto.ChatDto;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,17 @@ public class ChatRepositoryImpl implements ChatRepositoryCustom {
                         chat.createdAt)
                 )
                 .from(chat)
-                .where(chat.chatroom.seq.eq(roomSeq), chat.seq.lt(chatSeq))
+                .where(chat.chatroom.seq.eq(roomSeq), chatSeqLt(chatSeq))
                 .limit(20)
                 .orderBy(chat.seq.desc())
                 .fetch();
+    }
+
+    private BooleanExpression chatSeqLt(Long chatSeq) {
+        if (chatSeq == null || chatSeq == 0) {
+            return null;
+        }
+
+        return chat.seq.lt(chatSeq);
     }
 }
