@@ -5,6 +5,8 @@ import com.cupid.joalarm.account.service.AccountService;
 import com.cupid.joalarm.accountChatroom.dto.AccountChatroomDto;
 import com.cupid.joalarm.accountChatroom.entity.AccountChatroom;
 import com.cupid.joalarm.accountChatroom.service.AccountChatroomService;
+import com.cupid.joalarm.chatroom.dto.UpdateChatroomNameDto;
+import com.cupid.joalarm.chatroom.dto.UpdateLastViewChatDto;
 import com.cupid.joalarm.chatroom.entity.Chatroom;
 import com.cupid.joalarm.chatroom.service.ChatroomService;
 import com.cupid.joalarm.message.Message;
@@ -47,17 +49,15 @@ public class ChatroomController {
 
     @PostMapping("view")
     @ApiOperation(value = "마지막 확인 채팅 기록", notes = "마지막으로 확인한 채팅을 기록합니다.")
-    public ResponseEntity<?> updateLastViewChat(
-            @RequestBody Long accountSeq, @RequestBody Long chatroomSeq, @RequestBody Long chatSeq) {
-        return new ResponseEntity<>(
-                accountChatroomService.updateLastViewChatSeq(accountSeq, chatroomSeq, chatSeq), HttpStatus.OK);
+    public ResponseEntity<?> updateLastViewChat(@RequestBody UpdateLastViewChatDto dto) {
+        return new ResponseEntity<>(accountChatroomService
+                .updateLastViewChatSeq(dto.getAccountSeq(), dto.getChatroomSeq(), dto.getChatSeq()), HttpStatus.OK);
     }
 
     @PostMapping("name")
     @ApiOperation(value = "채팅방 이름 변경", notes = "채팅방의 이름을 유저가 원하는대로 변경합니다.")
-    public ResponseEntity<?> updateChatroomName(
-            @RequestBody Long accountSeq, @RequestBody Long chatroomSeq, @RequestBody String name) {
-        return new ResponseEntity<>(
-                accountChatroomService.updateChatroomName(accountSeq, chatroomSeq, name), HttpStatus.OK);
+    public ResponseEntity<?> updateChatroomName(@RequestBody UpdateChatroomNameDto dto) {
+        return new ResponseEntity<>(accountChatroomService
+                .updateChatroomName(dto.getAccountSeq(), dto.getChatroomSeq(), dto.getName()), HttpStatus.OK);
     }
 }
